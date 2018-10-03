@@ -8,6 +8,7 @@ var logger = require('morgan');
 var sassMiddleware = require('node-sass-middleware');
 var expressHandlebars = require('express-handlebars');
 var mongoose = require('mongoose');
+var session = require('express-session');
 
 var indexRouter = require('./routes/index');
 
@@ -32,6 +33,13 @@ app.use(sassMiddleware({
   debug: true,
   outputStyle: 'compressed',
   prefix: '/stylesheets'
+}));
+
+// Sessions settings.
+app.use(session({
+  secret: 'f4a980d8ddc98f718c187d439fa6cdc8',
+  saveUninitialized: false,
+  resave: false
 }));
 
 app.use(logger('dev'));
