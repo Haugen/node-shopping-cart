@@ -7,6 +7,7 @@ var logger = require('morgan');
 // Custom requirements.
 var sassMiddleware = require('node-sass-middleware');
 var expressHandlebars = require('express-handlebars');
+var mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
 
@@ -18,6 +19,11 @@ app.engine('.hbs', expressHandlebars({
   extname: '.hbs'
 }));
 app.set('view engine', '.hbs');
+
+// Mongoose setup.
+mongoose.connect('mongodb://localhost:27017/shopping', {
+  useNewUrlParser: true
+});
 
 // Configuration for using sass.
 app.use(sassMiddleware({
