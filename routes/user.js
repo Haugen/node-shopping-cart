@@ -2,13 +2,16 @@ var express = require('express');
 var router = express.Router();
 var csrf = require('csurf');
 var passport = require('passport');
+var User = require('../models/user');
 
 var csrfProtection = csrf();
 router.use(csrfProtection);
 
 /* GET profile page. */
 router.get('/profile', isLoggedIn, function(req, res, next) {
-  res.render('user/profile');
+  res.render('user/profile', {
+    user: req.session.user,
+  });
 })
 
 /* GET logout page. */
