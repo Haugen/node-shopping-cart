@@ -12,6 +12,7 @@ var session = require('express-session');
 var passport = require('passport');
 var flash = require('connect-flash');
 var validator = require('express-validator');
+var MongoStore = require('connect-mongo')(session);
 
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
@@ -43,7 +44,9 @@ app.use(sassMiddleware({
 app.use(session({
   secret: 'f4a980d8ddc98f718c187d439fa6cdc8',
   saveUninitialized: false,
-  resave: false
+  resave: false,
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  cookie: { maxAge: 180 * 60 * 1000 }
 }));
 
 // Flash settings. This depends on sessions above.
@@ -67,6 +70,7 @@ require('./config/passport');
 
 app.use(function(req, res, next) {
   res.locals.loggedIn = req.isAuthenticated();
+  res.locals.session = req.session;
   next();
 });
 

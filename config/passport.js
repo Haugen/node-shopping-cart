@@ -34,7 +34,6 @@ passport.use('local.login', new LocalStrategy({
     if (!user) return done(null, false, {message: 'Email address not found.'});
     if (!user.validPassword(req.body.password)) return done(null, false, {message: 'Incorrect password.'});
 
-    req.session.user = {id: user._id, email: user.email};
     done(null, user);
   });
 }));

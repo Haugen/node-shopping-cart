@@ -9,9 +9,8 @@ router.use(csrfProtection);
 
 /* GET profile page. */
 router.get('/profile', isLoggedIn, function(req, res, next) {
-  res.render('user/profile', {
-    user: req.session.user,
-  });
+  console.log(res.locals.session);
+  res.render('user/profile');
 })
 
 /* GET logout page. */
