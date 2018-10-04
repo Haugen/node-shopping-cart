@@ -34,9 +34,28 @@ router.post('/user/signup', passport.authenticate('local.signup', {
   failureFlash: true
 }));
 
+/* GET user sign in page. */
+router.get('/user/signin', function(req, res, next) {
+  var messages = req.flash('error');
+  res.render('user/signin', {
+    csrfToken: req.csrfToken(),
+    messages: messages,
+    hasErrors: messages.length > 0 ? true : false,
+  });
+})
+
+/* POST user sign in page. */
+router.post('/user/signin', passport.authenticate('local.signin', {
+  successRedirect: '/user/profile',
+  failureRedirect: '/user/signin',
+  failureFlash: true
+}));
+
 /* GET profile page. */
 router.get('/user/profile', function(req, res, next) {
   res.render('user/profile');
 })
+
+
 
 module.exports = router;

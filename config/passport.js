@@ -12,6 +12,32 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
+passport.use('local.signin', new LocalStrategy({
+  usernameField: 'email',
+  passwordField: 'password',
+  passReqToCallback: true
+}, function(req, email, password, done) {
+  req.checkBody('email', 'Please enter your email.').notEmpty();
+  req.checkBody('password', 'Please enter your password.').notEmpty();
+  var errors = req.validationErrors();
+
+  if (errors) {
+    let messages = [];
+    errors.forEach(function(error) {
+      messages.push(error);
+    });
+    return done(null, false, req.flash('error', messages));
+  }
+
+  User.findOne({'email': email}, function(err, user) {
+    if (err) return done(err);
+    if (!user) return done(null, false, {message: 'Email address not found.'});
+    if (!user.validPassword(req.body.password)) return done(null, false, {message: 'Incorrect password.'});
+
+    done(null, user);
+  });
+}));
+
 passport.use('local.signup', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
