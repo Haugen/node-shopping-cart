@@ -9,6 +9,8 @@ var sassMiddleware = require('node-sass-middleware');
 var expressHandlebars = require('express-handlebars');
 var mongoose = require('mongoose');
 var session = require('express-session');
+var passport = require('passport');
+var flash = require('connect-flash');
 
 var indexRouter = require('./routes/index');
 
@@ -42,11 +44,21 @@ app.use(session({
   resave: false
 }));
 
+// Flash settings. This depends on sessions above.
+app.use(flash());
+
+// Passport settings.
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Include custom configuration.
+require('./config/passport');
 
 app.use('/', indexRouter);
 
