@@ -24,9 +24,9 @@ passport.use('local.signup', new LocalStrategy({
     var newUser = new User();
     newUser.email = email;
     newUser.password = newUser.encryptPassword(password);
-    newUser.save(function(err, done) {
+    newUser.save(function(err, result) {
       if (err) return done(err);
-      return done(null, newUser, {message: 'New user created. Welcome!'});
+      return done(null, newUser);
     })
   });
 }));
