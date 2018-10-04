@@ -11,6 +11,7 @@ var mongoose = require('mongoose');
 var session = require('express-session');
 var passport = require('passport');
 var flash = require('connect-flash');
+var validator = require('express-validator');
 
 var indexRouter = require('./routes/index');
 
@@ -56,6 +57,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Settings for validator.
+app.use(validator());
 
 // Include custom configuration.
 require('./config/passport');

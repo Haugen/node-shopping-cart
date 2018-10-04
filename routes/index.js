@@ -19,10 +19,11 @@ router.get('/', function(req, res, next) {
 
 /* GET user signup page. */
 router.get('/user/signup', function(req, res, next) {
-  var message = req.flash('error');
+  var messages = req.flash('error');
   res.render('user/signup', {
     csrfToken: req.csrfToken(),
-    message: message
+    messages: messages,
+    hasErrors: messages.length > 0 ? true : false,
   });
 });
 
