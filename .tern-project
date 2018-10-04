@@ -13,6 +13,18 @@
       "dontLoad": "",
       "load": "",
       "modules": ""
-    }
+    },
+    "requirejs": {
+      "baseURL": "",
+      "paths": "",
+      "override": ""
+    },
+    "node_resolve": {},
+    "modules": {
+      "dontLoad": "",
+      "load": "",
+      "modules": ""
+    },
+    "es_modules": {}
   }
 }

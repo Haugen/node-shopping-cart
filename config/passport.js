@@ -12,7 +12,7 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-passport.use('local.signin', new LocalStrategy({
+passport.use('local.login', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
   passReqToCallback: true

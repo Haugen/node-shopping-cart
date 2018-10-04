@@ -14,6 +14,7 @@ var flash = require('connect-flash');
 var validator = require('express-validator');
 
 var indexRouter = require('./routes/index');
+var userRouter = require('./routes/user');
 
 var app = express();
 
@@ -64,6 +65,12 @@ app.use(validator());
 // Include custom configuration.
 require('./config/passport');
 
+app.use(function(req, res, next) {
+  res.locals.loggedIn = req.isAuthenticated();
+  next();
+});
+
+app.use('/user', userRouter);
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
