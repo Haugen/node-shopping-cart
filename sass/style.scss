@@ -1,6 +1,10 @@
 
 @import "node_modules/bootstrap/scss/bootstrap";
 
+body {
+  padding-bottom: 50px;
+}
+
 .dropdown-menu {
   right: 0;
   left: auto;

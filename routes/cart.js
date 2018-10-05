@@ -16,7 +16,7 @@ var Product = require('../models/product');
 router.get('/action/:action/:id', function(req, res, next) {
   var productId = req.params.id;
   var action = req.params.action;
-  var cart = new Cart(req.session.cart ? req.session.cart : {});
+  var cart = new Cart(req.session.cart || {});
 
   Product.findById(productId, function(err, product) {
     if (err) return res.redirect('/');
@@ -33,6 +33,21 @@ router.get('/view', function(req, res, next) {
     cartItems: cart.generateArray(),
     totalPrice: cart.totalPrice
   });
+});
+
+/* GET page for checking out. */
+router.get('/checkout', function(req, res, next) {
+  if (!req.session.cart) return res.redirect('/cart/view');
+  let cart = new Cart(req.session.cart || {});
+
+  res.render('shop/checkout', {
+    totalPrice: cart.totalPrice
+  });
+});
+
+/* POST page for checking out. */
+router.post('/checkout', function(req, res, next) {
+  
 });
 
 /* GET temp page for emptying the cart. */
