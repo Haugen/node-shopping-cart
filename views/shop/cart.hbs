@@ -1,0 +1,35 @@
+
+<h1>Shopping Cart</h1>
+
+{{#if cartItems}}
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Title</th>
+        <th scope="col">Price</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Total price</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+    {{#each cartItems}}
+      <tr>
+        <td><img width="40px" src="{{ this.item.imagePath }}" alt="{{ this.item.title }}"></td>
+        <td>{{ this.item.title }}</td>
+        <td>${{ this.item.price }}</td>
+        <td>
+          <a href="/cart/action/remove/{{ this.item._id }}"><strong>-</strong></a>
+          {{ this.quantity }}
+          <a href="/cart/action/add/{{ this.item._id }}"><strong>+</strong></a></td>
+        <td>${{ this.price }}</td>
+        <td><a href="/cart/action/delete/{{ this.item._id }}">X</a></td>
+      </tr>
+    {{/each}}
+    </tbody>
+  </table>
+  <p>Total price: <strong>${{ totalPrice }}</strong></p>
+{{else}}
+  <p>Your cart is empty.</p>
+{{/if}}
