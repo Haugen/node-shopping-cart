@@ -24,14 +24,15 @@
           {{ this.quantity }}
           <a href="/cart/action/add/{{ this.item._id }}"><strong>+</strong></a></td>
         <td>${{ this.price }}</td>
-        <td><a href="/cart/action/delete/{{ this.item._id }}">X</a></td>
+        <td><a href="/cart/action/delete/{{ this.item._id }}"><i class="fas fa-trash"></i></a></td>
       </tr>
     {{/each}}
     </tbody>
   </table>
-  <p>Total price: <strong>${{ totalPrice }}</strong></p>
+  <p>Total price: <strong>$<span id="checkout-price">{{ totalPrice }}</span></strong></p>
   <hr />
-  <a href="/cart/checkout" class="btn btn-success">Checkout</a>
+  <!-- Create a form that will get submitted, and add a POST route for checkout. -->
+  <button id="checkout" class="btn btn-success">Checkout</button>
 {{else}}
   <p>Your cart is empty.</p>
 {{/if}}
