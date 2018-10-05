@@ -6,7 +6,7 @@
       <h5 class="card-title">{{ product.title }}</h5>
       <p class="card-text">{{ product.description }}</p>
       <div class="price">${{ product.price }}</div>
-      <a href="#" class="btn btn-primary">Add to cart</a>
+      <a href="/add-to-cart/{{ product._id }}" class="btn btn-primary">Add to cart</a>
     </div>
   </div>
 </div>
