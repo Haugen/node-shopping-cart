@@ -3,6 +3,7 @@ var router = express.Router();
 var Cart = require('../models/cart');
 
 var Product = require('../models/product');
+var stripe = require("stripe")("sk_test_OBsj2xJ039KHTOJ2zaK02D90");
 
 /* GET page for adding a product to the cart.
    The :action parameter will be either "add", "remove" or delete and will call the
@@ -47,7 +48,16 @@ router.get('/checkout', function(req, res, next) {
 
 /* POST page for checking out. */
 router.post('/checkout', function(req, res, next) {
-  
+  const token = req.body.stripeToken;
+
+  stripe.charges.create({
+    amount: req.session.cart.totalPrice * 100,
+    currency: 'usd',
+    description: 'Example charge',
+    source: token,
+  }, function(err, charge) {
+    res.redirect('/');
+  });
 });
 
 /* GET temp page for emptying the cart. */

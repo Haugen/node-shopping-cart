@@ -31,8 +31,18 @@
   </table>
   <p>Total price: <strong>$<span id="checkout-price">{{ totalPrice }}</span></strong></p>
   <hr />
-  <!-- Create a form that will get submitted, and add a POST route for checkout. -->
-  <button id="checkout" class="btn btn-success">Checkout</button>
+  <form action="/cart/checkout" method="POST">
+    <script
+      src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+      data-key="pk_test_ptCDSnOn0yibg7HwsHfBRvs1"
+      data-amount="{{ totalPrice }}"
+      data-name="Demo Site"
+      data-description="Widget"
+      data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+      data-locale="auto">
+    </script>
+    <!-- <button type="submit" id="checkout" class="btn btn-success">Checkout</button> -->
+  </form>
 {{else}}
   <p>Your cart is empty.</p>
 {{/if}}
