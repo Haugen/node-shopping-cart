@@ -1,0 +1,13 @@
+// Global configuration.
+
+module.exports = {
+  isLoggedIn: function(req, res, next) {
+    if (req.isAuthenticated()) return next();
+    res.redirect('/user/login');
+  },
+
+  notLoggedIn: function(req, res, next) {
+    if (!req.isAuthenticated()) return next();
+    res.redirect('/');
+  }
+}

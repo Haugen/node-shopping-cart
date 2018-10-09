@@ -3,12 +3,13 @@ var router = express.Router();
 var csrf = require('csurf');
 var passport = require('passport');
 var User = require('../models/user');
+var customGlobals = require('../config/global');
 
 var csrfProtection = csrf();
 router.use(csrfProtection);
 
 /* GET profile page. */
-router.get('/profile', isLoggedIn, function(req, res, next) {
+router.get('/profile', customGlobals.isLoggedIn, function(req, res, next) {
   let user;
 
   if (!res.locals.session.user) {
@@ -32,14 +33,14 @@ router.get('/profile', isLoggedIn, function(req, res, next) {
 })
 
 /* GET logout page. */
-router.get('/logout', isLoggedIn, function(req, res, next) {
+router.get('/logout', customGlobals.isLoggedIn, function(req, res, next) {
   req.logout();
   res.redirect('/');
 });
 
 /* Adding a custom middleware here. All routes below this will only be available
    to logged out visitors. */
-router.use('/', notLoggedIn, function(req, res, next) {
+router.use('/', customGlobals.notLoggedIn, function(req, res, next) {
   next();
 });
 
@@ -78,13 +79,3 @@ router.post('/login', passport.authenticate('local.login', {
 }));
 
 module.exports = router;
-
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) return next();
-  res.redirect('/');
-}
-
-function notLoggedIn(req, res, next) {
-  if (!req.isAuthenticated()) return next();
-  res.redirect('/');
-}

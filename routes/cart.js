@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Cart = require('../models/cart');
+var customGlobals = require('../config/global');
 
 var Product = require('../models/product');
 var Order = require('../models/order');
@@ -29,7 +30,7 @@ router.get('/action/:action/:id', function(req, res, next) {
 });
 
 /* GET page for viewing the cart. */
-router.get('/view', function(req, res, next) {
+router.get('/view', customGlobals.isLoggedIn, function(req, res, next) {
   var cart = new Cart(req.session.cart || {});
   res.render('shop/cart', {
     cartItems: cart.generateArray(),
@@ -39,7 +40,7 @@ router.get('/view', function(req, res, next) {
 });
 
 /* POST page for checking out. */
-router.post('/checkout', function(req, res, next) {
+router.post('/checkout', customGlobals.isLoggedIn, function(req, res, next) {
   const token = req.body.stripeToken;
 
   stripe.charges.create({
