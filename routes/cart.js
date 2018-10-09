@@ -3,6 +3,7 @@ var router = express.Router();
 var Cart = require('../models/cart');
 
 var Product = require('../models/product');
+var Order = require('../models/order');
 var stripe = require("stripe")("sk_test_OBsj2xJ039KHTOJ2zaK02D90");
 
 /* GET page for adding a product to the cart.
@@ -32,17 +33,8 @@ router.get('/view', function(req, res, next) {
   var cart = new Cart(req.session.cart || {});
   res.render('shop/cart', {
     cartItems: cart.generateArray(),
-    totalPrice: cart.totalPrice
-  });
-});
-
-/* GET page for checking out. */
-router.get('/checkout', function(req, res, next) {
-  if (!req.session.cart) return res.redirect('/cart/view');
-  let cart = new Cart(req.session.cart || {});
-
-  res.render('shop/checkout', {
-    totalPrice: cart.totalPrice
+    totalPrice: cart.totalPrice,
+    totalPriceStripe: cart.totalPrice * 100
   });
 });
 
@@ -56,7 +48,16 @@ router.post('/checkout', function(req, res, next) {
     description: 'Example charge',
     source: token,
   }, function(err, charge) {
-    res.redirect('/');
+    if (err) res.redirect('/user/view');
+    var order = new Order({
+      user: req.user,
+      cart: req.session.cart,
+      paymentId: charge.id
+    });
+    order.save(function(err, result) {
+      req.session.cart = null;
+      res.redirect('/');
+    });
   });
 });
 

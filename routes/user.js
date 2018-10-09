@@ -9,8 +9,26 @@ router.use(csrfProtection);
 
 /* GET profile page. */
 router.get('/profile', isLoggedIn, function(req, res, next) {
-  console.log(res.locals.session);
-  res.render('user/profile');
+  let user;
+
+  if (!res.locals.session.user) {
+    user = new Promise(function(resolve, reject) {
+      User.findById(res.locals.session.passport.user, function(err, user) {
+        if (err) reject(err);
+        resolve(user);
+      })
+    })
+  } else {
+    user = Promise.resolve(res.locals.session.user);
+  }
+
+  user.then(function(user) {
+    res.render('user/profile', {
+      user: user
+    });
+  }, function(err) {
+    res.redirect('/')
+  })
 })
 
 /* GET logout page. */
